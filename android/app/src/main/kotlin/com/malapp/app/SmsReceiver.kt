@@ -1,4 +1,4 @@
-package com.masroofix.app
+package com.malapp.app
 
 import android.content.BroadcastReceiver
 import android.content.Context

@@ -27,7 +27,7 @@ class SmsNotifier {
 
   /// Android settings: the small icon is a white silhouette.
   static const initializationSettings = InitializationSettings(
-    android: AndroidInitializationSettings('@drawable/ic_stat_masroofix'),
+    android: AndroidInitializationSettings('@drawable/ic_stat_mal'),
   );
 
   /// Posts the notification [outcome] calls for, if any.
@@ -85,7 +85,7 @@ class SmsNotifier {
           transactionsChannelId,
           texts.t('sms.notification.channel_transactions'),
           channelDescription: texts.t('sms.notification.channel_transactions_desc'),
-          icon: '@drawable/ic_stat_masroofix',
+          icon: '@drawable/ic_stat_mal',
           color: _accent,
           groupKey: groupKey,
           styleInformation: BigTextStyleInformation(body),
@@ -123,7 +123,7 @@ class SmsNotifier {
           transactionsChannelId,
           texts.t('sms.notification.channel_transactions'),
           channelDescription: texts.t('sms.notification.channel_transactions_desc'),
-          icon: '@drawable/ic_stat_masroofix',
+          icon: '@drawable/ic_stat_mal',
           color: _accent,
           styleInformation: BigTextStyleInformation(body),
           actions: [
@@ -150,7 +150,7 @@ class SmsNotifier {
           sendersChannelId,
           texts.t('sms.notification.channel_senders'),
           channelDescription: texts.t('sms.notification.channel_senders_desc'),
-          icon: '@drawable/ic_stat_masroofix',
+          icon: '@drawable/ic_stat_mal',
           color: _accent,
           actions: [
             AndroidNotificationAction(SmsNotificationActions.trust, texts.t('sms.notification.trust')),
@@ -179,7 +179,7 @@ class SmsNotifier {
           transactionsChannelId,
           texts.t('sms.notification.channel_transactions'),
           channelDescription: texts.t('sms.notification.channel_transactions_desc'),
-          icon: '@drawable/ic_stat_masroofix',
+          icon: '@drawable/ic_stat_mal',
           color: _accent,
           groupKey: groupKey,
           setAsGroupSummary: true,
