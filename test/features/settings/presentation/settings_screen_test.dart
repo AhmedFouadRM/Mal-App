@@ -220,11 +220,18 @@ void main() {
         'مسح كل البيانات',
         'حول التطبيق',
         'الإصدار',
-        'استخدام الأرقام الغربية (123)',
+        'استخدام الأرقام العربية (123)',
       ]) {
         expect(find.text(text), findsOneWidget, reason: text);
       }
       expect(Directionality.of(tester.element(find.text('الإعدادات'))), ui.TextDirection.rtl);
+    });
+
+    testWidgets('in Arabic, 123 are called Arabic digits, not Western', (tester) async {
+      await pump(tester, locale: const Locale('ar'));
+
+      expect(find.textContaining('الأرقام العربية'), findsOneWidget);
+      expect(find.textContaining('الغربية'), findsNothing);
     });
 
     testWidgets('the Western digits switch changes the setting', (tester) async {
