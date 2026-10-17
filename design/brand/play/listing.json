@@ -1,0 +1,12 @@
+{
+  "en-US": {
+    "title": "Mal: Money Tracker",
+    "short": "Track spending & income, budgets and insights. Private, offline, no account.",
+    "full": "Your money, clearly.\nMal shows you where your money goes, and keeps it on your phone.\n\n• Add in seconds: amount and category, that's it. The title is optional.\n• Income and balance: salary in, spending out, and your savings rate at a glance.\n• Wallets: separate wallets for you, the kids or the house, with transfers between them.\n• Budgets: weekly or monthly limits per category, with a heads-up before you go over.\n• Insights: spending by category and by wallet, and over time, compared with last month.\n• Recurring: rent, subscriptions and bills are logged when they're due.\n• From your bank SMS (optional): supported bank and wallet messages become transactions, automatically or with one tap. Messages are read on your phone, and their full text is never stored.\n• Arabic and English, light and dark mode, Egyptian pound and other currencies.\n\nPrivate by design\nNo account. No ads. No internet permission. Your data never leaves your phone. Lock the app with a PIN or your fingerprint, and back up to a file you control."
+  },
+  "ar": {
+    "title": "مال: تتبع مصروفاتك",
+    "short": "تتبع مصروفاتك ودخلك وميزانياتك بسهولة. خاص تمامًا ويعمل بدون إنترنت وبدون حساب.",
+    "full": "فلوسك، بوضوح.\nتطبيق مال يوضح لك أين تذهب فلوسك، ويحتفظ بكل شيء على هاتفك.\n\n• أضف مصروفك في ثوانٍ: المبلغ والفئة فقط، والعنوان اختياري.\n• الدخل والرصيد: راتبك الداخل ومصروفك الخارج ومعدل ادخارك، في لمحة.\n• المحافظ: محفظة لك وأخرى للأولاد أو للبيت، مع تحويلات بينها.\n• الميزانيات: حدود أسبوعية أو شهرية لكل فئة، وتنبيه قبل أن تتجاوزها.\n• التحليلات: إنفاقك حسب الفئة والمحفظة وعبر الوقت، مقارنةً بالشهر الماضي.\n• المصروفات المتكررة: الإيجار والاشتراكات والفواتير تُسجَّل في موعدها.\n• من رسائل البنك (اختياري): رسائل البنوك والمحافظ المدعومة تتحول إلى معاملات تلقائيًا أو بلمسة واحدة. تُقرأ الرسائل على هاتفك، ولا يُحفظ نصها كاملًا أبدًا.\n• عربي وإنجليزي، ووضع فاتح وداكن، والجنيه المصري وعملات أخرى.\n\nخاص من الأساس\nبلا حساب. بلا إعلانات. بلا إذن إنترنت. بياناتك لا تغادر هاتفك أبدًا. اقفل التطبيق برمز سري أو ببصمتك، واحفظ نسخة احتياطية في ملف تتحكم فيه."
+  }
+}
