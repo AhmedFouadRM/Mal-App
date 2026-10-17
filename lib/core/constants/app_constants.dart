@@ -1,6 +1,6 @@
 class AppConstants {
   AppConstants._();
-  
+
   static const String appName = 'Mal';
   static const String appNameAr = 'مال';
   static const int pinLength = 4;

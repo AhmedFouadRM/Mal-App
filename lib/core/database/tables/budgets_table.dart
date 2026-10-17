@@ -13,8 +13,7 @@ class BudgetsTable extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   /// One budget per category; deleted together with its category.
-  IntColumn get categoryId =>
-      integer().unique().references(CategoriesTable, #id, onDelete: KeyAction.cascade)();
+  IntColumn get categoryId => integer().unique().references(CategoriesTable, #id, onDelete: KeyAction.cascade)();
   IntColumn get limitMinor => integer().check(limitMinor.isBiggerThanValue(0))();
   TextColumn get period => text().check(period.isIn(const ['weekly', 'monthly']))();
 

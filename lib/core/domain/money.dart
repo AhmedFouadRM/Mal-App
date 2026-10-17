@@ -30,8 +30,7 @@ final class Money implements Comparable<Money> {
   bool operator >=(Money other) => minor >= other.minor;
 
   /// Sum of [amounts]; [zero] when empty.
-  static Money sum(Iterable<Money> amounts) =>
-      amounts.fold(zero, (total, amount) => total + amount);
+  static Money sum(Iterable<Money> amounts) => amounts.fold(zero, (total, amount) => total + amount);
 
   /// Parses user input such as `12.5`, `1,234.50`, `١٢٫٥` or `۱۲.۵`.
   ///
@@ -40,10 +39,9 @@ final class Money implements Comparable<Money> {
   /// empty, negative, malformed input, more fraction digits than
   /// [fractionDigits], or more than [maxIntegerDigits] integer digits.
   static Money? tryParse(String input, {required int fractionDigits}) {
-    final normalized = toWesternDigits(input)
-        .trim()
-        .replaceAll(arabicDecimalSeparator, '.')
-        .replaceAll(RegExp(r'[,٬\s]'), '');
+    final normalized = toWesternDigits(
+      input,
+    ).trim().replaceAll(arabicDecimalSeparator, '.').replaceAll(RegExp(r'[,٬\s]'), '');
     final match = RegExp(r'^(\d*)(?:\.(\d*))?$').firstMatch(normalized);
     if (match == null) return null;
 

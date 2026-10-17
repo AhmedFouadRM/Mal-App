@@ -11,16 +11,14 @@ class DateUtilsHelper {
     LocalDate date, {
     required String languageCode,
     bool westernDigits = false,
-  }) =>
-      _shape(DateFormat.yMMMd(languageCode).format(date.toDateTime()), languageCode, westernDigits);
+  }) => _shape(DateFormat.yMMMd(languageCode).format(date.toDateTime()), languageCode, westernDigits);
 
   /// `Aug 19` / `١٩ أغسطس`, for list group headers older than yesterday.
   static String formatShortDate(
     LocalDate date, {
     required String languageCode,
     bool westernDigits = false,
-  }) =>
-      _shape(DateFormat.MMMd(languageCode).format(date.toDateTime()), languageCode, westernDigits);
+  }) => _shape(DateFormat.MMMd(languageCode).format(date.toDateTime()), languageCode, westernDigits);
 
   static String _shape(String formatted, String languageCode, bool westernDigits) {
     if (languageCode != 'ar') return formatted;
@@ -47,13 +45,78 @@ class DateUtilsHelper {
   }
 
   static const _saturdayRegions = {
-    'AF', 'BH', 'DJ', 'DZ', 'EG', 'IQ', 'IR', 'JO', 'KW', 'LY', 'OM', 'QA', 'SD', 'SY',
+    'AF',
+    'BH',
+    'DJ',
+    'DZ',
+    'EG',
+    'IQ',
+    'IR',
+    'JO',
+    'KW',
+    'LY',
+    'OM',
+    'QA',
+    'SD',
+    'SY',
   };
 
   static const _sundayRegions = {
-    'AG', 'AS', 'BD', 'BR', 'BS', 'BT', 'BW', 'BZ', 'CA', 'CN', 'CO', 'DM', 'DO', 'ET',
-    'GT', 'GU', 'HK', 'HN', 'ID', 'IL', 'IN', 'JM', 'JP', 'KE', 'KH', 'KR', 'LA', 'MH',
-    'MM', 'MO', 'MT', 'MX', 'MZ', 'NI', 'NP', 'PA', 'PE', 'PH', 'PK', 'PR', 'PT', 'PY',
-    'SA', 'SG', 'SV', 'TH', 'TT', 'TW', 'UM', 'US', 'VE', 'VI', 'WS', 'YE', 'ZA', 'ZW',
+    'AG',
+    'AS',
+    'BD',
+    'BR',
+    'BS',
+    'BT',
+    'BW',
+    'BZ',
+    'CA',
+    'CN',
+    'CO',
+    'DM',
+    'DO',
+    'ET',
+    'GT',
+    'GU',
+    'HK',
+    'HN',
+    'ID',
+    'IL',
+    'IN',
+    'JM',
+    'JP',
+    'KE',
+    'KH',
+    'KR',
+    'LA',
+    'MH',
+    'MM',
+    'MO',
+    'MT',
+    'MX',
+    'MZ',
+    'NI',
+    'NP',
+    'PA',
+    'PE',
+    'PH',
+    'PK',
+    'PR',
+    'PT',
+    'PY',
+    'SA',
+    'SG',
+    'SV',
+    'TH',
+    'TT',
+    'TW',
+    'UM',
+    'US',
+    'VE',
+    'VI',
+    'WS',
+    'YE',
+    'ZA',
+    'ZW',
   };
 }

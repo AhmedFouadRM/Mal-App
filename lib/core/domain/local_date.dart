@@ -14,8 +14,7 @@ final class LocalDate implements Comparable<LocalDate> {
   const LocalDate._(this.year, this.month, this.day);
 
   /// Takes the calendar fields of [dateTime] as they are (local or UTC).
-  factory LocalDate.fromDateTime(DateTime dateTime) =>
-      LocalDate._(dateTime.year, dateTime.month, dateTime.day);
+  factory LocalDate.fromDateTime(DateTime dateTime) => LocalDate._(dateTime.year, dateTime.month, dateTime.day);
 
   /// The device-local calendar date.
   factory LocalDate.today() => LocalDate.fromDateTime(DateTime.now());

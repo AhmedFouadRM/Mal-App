@@ -6,12 +6,10 @@ part of 'recurring_expense_local_datasource.dart';
 mixin _$RecurringExpenseLocalDatasourceMixin on DatabaseAccessor<AppDatabase> {
   $WalletsTableTable get walletsTable => attachedDatabase.walletsTable;
   $CategoriesTableTable get categoriesTable => attachedDatabase.categoriesTable;
-  $RecurringExpensesTableTable get recurringExpensesTable =>
-      attachedDatabase.recurringExpensesTable;
+  $RecurringExpensesTableTable get recurringExpensesTable => attachedDatabase.recurringExpensesTable;
   $TransfersTableTable get transfersTable => attachedDatabase.transfersTable;
   $ExpensesTableTable get expensesTable => attachedDatabase.expensesTable;
-  RecurringExpenseLocalDatasourceManager get managers =>
-      RecurringExpenseLocalDatasourceManager(this);
+  RecurringExpenseLocalDatasourceManager get managers => RecurringExpenseLocalDatasourceManager(this);
 }
 
 class RecurringExpenseLocalDatasourceManager {
@@ -19,21 +17,18 @@ class RecurringExpenseLocalDatasourceManager {
   RecurringExpenseLocalDatasourceManager(this._db);
   $$WalletsTableTableTableManager get walletsTable =>
       $$WalletsTableTableTableManager(_db.attachedDatabase, _db.walletsTable);
-  $$CategoriesTableTableTableManager get categoriesTable =>
-      $$CategoriesTableTableTableManager(
-        _db.attachedDatabase,
-        _db.categoriesTable,
-      );
-  $$RecurringExpensesTableTableTableManager get recurringExpensesTable =>
-      $$RecurringExpensesTableTableTableManager(
-        _db.attachedDatabase,
-        _db.recurringExpensesTable,
-      );
-  $$TransfersTableTableTableManager get transfersTable =>
-      $$TransfersTableTableTableManager(
-        _db.attachedDatabase,
-        _db.transfersTable,
-      );
+  $$CategoriesTableTableTableManager get categoriesTable => $$CategoriesTableTableTableManager(
+    _db.attachedDatabase,
+    _db.categoriesTable,
+  );
+  $$RecurringExpensesTableTableTableManager get recurringExpensesTable => $$RecurringExpensesTableTableTableManager(
+    _db.attachedDatabase,
+    _db.recurringExpensesTable,
+  );
+  $$TransfersTableTableTableManager get transfersTable => $$TransfersTableTableTableManager(
+    _db.attachedDatabase,
+    _db.transfersTable,
+  );
   $$ExpensesTableTableTableManager get expensesTable =>
       $$ExpensesTableTableTableManager(_db.attachedDatabase, _db.expensesTable);
 }

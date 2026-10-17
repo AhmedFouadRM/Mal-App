@@ -12,9 +12,9 @@ void main() {
       jsonDecode(File('assets/translations/$lang.json').readAsStringSync()) as Map<String, dynamic>;
 
   Set<String> flatten(Map<String, dynamic> json, [String prefix = '']) => {
-        for (final MapEntry(:key, :value) in json.entries)
-          if (value is Map<String, dynamic>) ...flatten(value, '$prefix$key.') else '$prefix$key',
-      };
+    for (final MapEntry(:key, :value) in json.entries)
+      if (value is Map<String, dynamic>) ...flatten(value, '$prefix$key.') else '$prefix$key',
+  };
 
   final en = flatten(load('en'));
   final ar = flatten(load('ar'));

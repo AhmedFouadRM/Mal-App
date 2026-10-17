@@ -20,8 +20,7 @@ String toWesternDigits(String input) {
   for (final rune in input.runes) {
     if (rune >= _arabicIndicZero && rune <= _arabicIndicZero + 9) {
       buffer.writeCharCode(_westernZero + rune - _arabicIndicZero);
-    } else if (rune >= _extendedArabicIndicZero &&
-        rune <= _extendedArabicIndicZero + 9) {
+    } else if (rune >= _extendedArabicIndicZero && rune <= _extendedArabicIndicZero + 9) {
       buffer.writeCharCode(_westernZero + rune - _extendedArabicIndicZero);
     } else {
       buffer.writeCharCode(rune);
