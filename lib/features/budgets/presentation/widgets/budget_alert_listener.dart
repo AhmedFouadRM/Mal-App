@@ -21,6 +21,9 @@ import 'package:material_symbols_icons/symbols.dart';
 /// progress app-wide, so a manual save, an edit, or recurring generation
 /// all trigger it the same way; several budgets crossing at once share one
 /// dialog. Re-subscribes on resume, as "today" (and the window) may change.
+///
+/// Spending that takes a budget from on track to close to its limit gets a
+/// snackbar instead, a heads-up that never stands in the way of the save.
 class BudgetAlertListener extends StatefulWidget {
   const BudgetAlertListener({
     required this.budgets,
@@ -59,6 +62,9 @@ class _BudgetAlertListenerState extends State<BudgetAlertListener> {
   List<BudgetProgress>? _pending;
   bool _busy = false;
 
+  /// The last snapshot handled, by budget and window, to spot warnings.
+  Map<(int, LocalDate), BudgetProgress>? _last;
+
   @override
   void initState() {
     super.initState();
@@ -96,17 +102,62 @@ class _BudgetAlertListenerState extends State<BudgetAlertListener> {
     while (_pending != null) {
       final snapshot = _pending!;
       _pending = null;
+      final warnings = _newWarnings(snapshot);
       final fresh = [
         for (final progress in await widget.takeAlerts(snapshot))
           if (_shown.add((progress.budget.id, progress.periodStart))) progress,
       ];
-      if (fresh.isEmpty) continue;
+      if (fresh.isEmpty && warnings.isEmpty) continue;
       if (widget.auth case final auth? when auth.state.isLocked) {
         await auth.stream.firstWhere((state) => !state.isLocked);
       }
-      if (mounted) await _show(fresh);
+      if (!mounted) continue;
+      _warn(warnings);
+      if (fresh.isNotEmpty) await _show(fresh);
     }
     _busy = false;
+  }
+
+  /// Budgets that more spending took from on track to the warning level
+  /// since the last snapshot. A changed limit is the user's own edit, and
+  /// the first snapshot has nothing to compare with, so neither counts.
+  List<BudgetProgress> _newWarnings(List<BudgetProgress> snapshot) {
+    final last = _last;
+    _last = {for (final progress in snapshot) (progress.budget.id, progress.periodStart): progress};
+    if (last == null) return const [];
+    return [
+      for (final progress in snapshot)
+        if (progress.status == BudgetStatus.warning)
+          if (last[(progress.budget.id, progress.periodStart)] case final before?
+              when before.status == BudgetStatus.safe &&
+                  before.budget.limit == progress.budget.limit &&
+                  progress.spent > before.spent)
+            progress,
+    ];
+  }
+
+  /// "Food · Close to the limit · EGP 150 remaining", one snackbar each.
+  void _warn(List<BudgetProgress> warnings) {
+    final navigatorContext = widget.navigatorKey.currentContext;
+    if (navigatorContext == null) return;
+    final messenger = ScaffoldMessenger.maybeOf(navigatorContext);
+    for (final progress in warnings) {
+      final name = _categories[progress.budget.categoryId]?.displayName;
+      messenger?.showSnackBar(
+        SnackBar(
+          // The amount reads the currency setting, which needs a build.
+          content: Builder(
+            builder: (context) => Text(
+              [
+                ?name,
+                StringManager.budgetStatus(BudgetStatus.warning.name),
+                StringManager.budgetRemaining(context.money(progress.remaining)),
+              ].join(' · '),
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   Future<void> _show(List<BudgetProgress> exceeded) async {

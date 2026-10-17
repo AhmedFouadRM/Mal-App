@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +8,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:masroofy/core/domain/local_date.dart';
 import 'package:masroofy/core/domain/money.dart';
 import 'package:masroofy/core/domain/transaction_kind.dart';
+import 'package:masroofy/core/error/failures.dart';
 import 'package:masroofy/features/budgets/domain/entities/budget.dart';
 import 'package:masroofy/features/budgets/domain/entities/budget_draft.dart';
 import 'package:masroofy/features/budgets/domain/entities/budget_period.dart';
@@ -288,6 +291,107 @@ void main() {
       await tester.pump(const Duration(seconds: 1));
       await tester.pumpAndSettle();
       expect(find.text('Over budget'), findsOneWidget);
+    });
+
+    group('warning', () {
+      late StreamController<Either<Failure, List<BudgetProgress>>> progress;
+
+      setUp(() {
+        progress = StreamController();
+        when(
+          () => budgets.watchProgress(any(), firstWeekday: any(named: 'firstWeekday')),
+        ).thenAnswer((_) => progress.stream);
+        // Like the real use case: only exceeded budgets are announced.
+        when(() => alerts(any())).thenAnswer(
+          (invocation) async => [
+            for (final p in invocation.positionalArguments.single as List<BudgetProgress>)
+              if (p.status == BudgetStatus.exceeded) p,
+          ],
+        );
+      });
+      tearDown(() => progress.close());
+
+      Future<void> pumpListener(WidgetTester tester) async {
+        final navigatorKey = GlobalKey<NavigatorState>();
+        await pumpApp(
+          tester,
+          BudgetAlertListener(
+            budgets: budgets,
+            categories: categories,
+            takeAlerts: alerts,
+            navigatorKey: navigatorKey,
+            child: Navigator(
+              key: navigatorKey,
+              onGenerateRoute: (_) => MaterialPageRoute<void>(builder: (_) => const Scaffold()),
+            ),
+          ),
+        );
+      }
+
+      Future<void> emit(WidgetTester tester, List<BudgetProgress> snapshot) async {
+        progress.add(Right(snapshot));
+        await tester.pumpAndSettle();
+      }
+
+      const warning = 'Transport · Close to the limit · EGP 150 remaining';
+
+      testWidgets('spending that crosses the warning level shows a snackbar, not a dialog', (tester) async {
+        await pumpListener(tester);
+        await emit(tester, [_progress(2, 2, spent: 50000)]);
+        expect(find.byType(SnackBar), findsNothing);
+
+        await emit(tester, [_progress(2, 2, spent: 85000)]);
+
+        expect(find.text(warning), findsOneWidget);
+        expect(find.byType(AlertDialog), findsNothing);
+      });
+
+      testWidgets('is in Arabic too', (tester) async {
+        final navigatorKey = GlobalKey<NavigatorState>();
+        await pumpApp(
+          tester,
+          BudgetAlertListener(
+            budgets: budgets,
+            categories: categories,
+            takeAlerts: alerts,
+            navigatorKey: navigatorKey,
+            child: Navigator(
+              key: navigatorKey,
+              onGenerateRoute: (_) => MaterialPageRoute<void>(builder: (_) => const Scaffold()),
+            ),
+          ),
+          locale: const Locale('ar'),
+        );
+        await emit(tester, [_progress(2, 2, spent: 50000)]);
+        await emit(tester, [_progress(2, 2, spent: 85000)]);
+
+        expect(find.textContaining('قريب من الحد'), findsOneWidget);
+      });
+
+      testWidgets('nothing on the first snapshot, nor when already at the warning level', (tester) async {
+        await pumpListener(tester);
+        await emit(tester, [_progress(2, 2, spent: 85000)]);
+        await emit(tester, [_progress(2, 2, spent: 90000)]);
+
+        expect(find.byType(SnackBar), findsNothing);
+      });
+
+      testWidgets('lowering the limit is not a warning', (tester) async {
+        await pumpListener(tester);
+        await emit(tester, [_progress(2, 2, spent: 50000)]);
+        await emit(tester, [_progress(2, 2, spent: 50000, limit: 60000)]);
+
+        expect(find.byType(SnackBar), findsNothing);
+      });
+
+      testWidgets('going straight over the limit is the over-budget dialog alone', (tester) async {
+        await pumpListener(tester);
+        await emit(tester, [_progress(2, 2, spent: 50000)]);
+        await emit(tester, [_progress(2, 2, spent: 120000)]);
+
+        expect(find.text('Over budget'), findsOneWidget);
+        expect(find.byType(SnackBar), findsNothing);
+      });
     });
   });
 }
