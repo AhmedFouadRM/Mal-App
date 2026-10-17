@@ -1,0 +1,13 @@
+{
+  "s1": {"text": "كل جنيه داخل وخارج، في لمحة.", "weight": "Regular", "size": 40, "lh": 60, "color": "#3E5A4D"},
+  "h2": {"text": "اعرف أين تذهب فلوسك", "weight": "Bold", "size": 80, "lh": 112, "color": "#ECFDF5"},
+  "s2": {"text": "حسب الفئة والمحفظة والشهر.", "weight": "Regular", "size": 40, "lh": 60, "color": "#8FD1B9"},
+  "h3": {"text": "ميزانيات تنبهك مبكرًا", "weight": "Bold", "size": 80, "lh": 112, "color": "#064E3B"},
+  "s3": {"text": "حدود أسبوعية أو شهرية لأي فئة.", "weight": "Regular", "size": 40, "lh": 60, "color": "#3E5A4D"},
+  "h4": {"text": "رسائل البنك\nتصبح معاملات", "weight": "Bold", "size": 80, "lh": 112, "color": "#ECFDF5"},
+  "s4": {"text": "تُقرأ على هاتفك فقط، وأنت تختار ما يُضاف.", "weight": "Regular", "size": 40, "lh": 60, "color": "#8FD1B9"},
+  "h5": {"text": "فواتير تُسجَّل وحدها", "weight": "Bold", "size": 80, "lh": 112, "color": "#064E3B"},
+  "s5": {"text": "الإيجار والاشتراكات والراتب، في موعدها.", "weight": "Regular", "size": 40, "lh": 60, "color": "#3E5A4D"},
+  "h6": {"text": "خاص ويعمل دون إنترنت", "weight": "Bold", "size": 80, "lh": 112, "color": "#ECFDF5"},
+  "s6": {"text": "بلا حساب ولا سحابة. اقفله برمز سري أو ببصمتك.", "weight": "Regular", "size": 40, "lh": 60, "color": "#8FD1B9"}
+}
