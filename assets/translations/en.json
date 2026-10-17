@@ -14,7 +14,6 @@
   },
   "expenses": {
     "title": "Transactions",
-    "tab": "Activity",
     "add": "Add expense",
     "edit": "Edit expense",
     "deleted": "“{}” deleted",

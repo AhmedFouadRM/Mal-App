@@ -79,7 +79,7 @@ class _TabBar extends StatelessWidget {
       width: AppShell.tabBarWidth,
       child: GlassTabBar.bottom(
         tabs: [
-          tab(Symbols.receipt_long_rounded, StringManager.expensesTab),
+          tab(Symbols.receipt_long_rounded, StringManager.expensesTitle),
           tab(Symbols.bar_chart_rounded, StringManager.analyticsTitle),
           tab(Symbols.settings_rounded, StringManager.settingsTitle),
         ],
