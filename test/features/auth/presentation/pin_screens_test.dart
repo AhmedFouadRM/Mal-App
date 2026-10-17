@@ -11,6 +11,7 @@ import 'package:masroofy/features/auth/presentation/cubits/pin_setup_cubit.dart'
 import 'package:masroofy/features/auth/presentation/screens/lock_screen.dart';
 import 'package:masroofy/features/auth/presentation/screens/pin_setup_screen.dart';
 import 'package:masroofy/features/auth/presentation/screens/pin_verify_screen.dart';
+import 'package:masroofy/features/auth/presentation/widgets/pin_keypad.dart';
 import 'package:masroofy/shared/auth/auth_cubit.dart';
 import 'package:masroofy/shared/auth/pin_flow.dart';
 import 'package:masroofy/shared/widgets/brand.dart';
@@ -106,6 +107,29 @@ void main() {
         findsNothing,
       );
       expect(tester.getTopLeft(find.byType(BrandGlyph)).dy, lessThan(tester.getTopLeft(find.text('Enter PIN')).dy));
+    });
+
+    testWidgets('matches the Figma layout (41:810) on a 360 x 800 screen', (tester) async {
+      tester.view
+        ..physicalSize = const Size(360, 800)
+        ..devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      await pumpLock(tester);
+
+      final glyph = tester.getRect(find.byType(BrandGlyph));
+      final title = tester.getRect(find.text('Enter PIN'));
+      final message = tester.getRect(find.text('Enter your PIN to open Mal.'));
+      final dots = tester.getRect(find.byType(PinDots));
+      expect(glyph.center.dy, 120 + 36, reason: 'the 72 px slot starts 120 px down');
+      expect(title.top - (120 + 72), 12);
+      expect(message.top - title.bottom, 12);
+      expect(dots.top - message.bottom, 12);
+      expect(dots.width, 4 * 14 + 3 * 16);
+
+      final keys = tester.getRect(find.byType(PinKeypad));
+      expect(keys.size, const Size(264, 336));
+      expect(800 - keys.bottom, 40);
+      expect(tester.getSize(find.byKey(const ValueKey('pin-key-1'))), const Size.square(72));
     });
 
     testWidgets('a lockout shows the hourglass in place of the glyph', (tester) async {

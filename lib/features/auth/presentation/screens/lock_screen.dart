@@ -48,6 +48,7 @@ class _LockScreenState extends State<LockScreen> {
           body: SafeArea(
             child: PinCheckView(
               graphic: const BrandGlyph(width: 72),
+              top: 120,
               title: StringManager.enterPin,
               message: StringManager.unlockHint,
               submit: auth.unlockWithPin,

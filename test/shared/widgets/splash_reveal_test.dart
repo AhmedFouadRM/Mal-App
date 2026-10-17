@@ -43,18 +43,19 @@ void main() {
     expect(find.descendant(of: overlay, matching: find.byType(BrandGlyph)), findsOneWidget);
   });
 
-  testWidgets('plays for 1.6 s, then is gone', (tester) async {
+  testWidgets('plays for 2.4 s, then is gone', (tester) async {
+    expect(SplashReveal.duration, const Duration(milliseconds: 2400));
     await pumpReveal(tester);
 
-    await tester.pump(const Duration(milliseconds: 1000));
+    await tester.pump(const Duration(milliseconds: 2000));
     expect(overlay, findsOneWidget);
     expect(overlayOpacity(tester), 1);
 
-    await tester.pump(const Duration(milliseconds: 500));
-    expect(overlayOpacity(tester), lessThan(1), reason: 'fading into the first screen after 1.4 s');
+    await tester.pump(const Duration(milliseconds: 250));
+    expect(overlayOpacity(tester), lessThan(1), reason: 'fading into the first screen after 2.1 s');
 
     // Done just past the end.
-    await tester.pump(const Duration(milliseconds: 101));
+    await tester.pump(const Duration(milliseconds: 151));
     await tester.pump();
     expect(overlay, findsNothing);
     expect(find.text('Transactions'), findsOneWidget);
@@ -62,7 +63,7 @@ void main() {
 
   testWidgets('settles with the glyph lifted above the wordmark and slogan', (tester) async {
     await pumpReveal(tester);
-    await tester.pump(const Duration(milliseconds: 1300));
+    await tester.pump(const Duration(milliseconds: 1900));
 
     final glyph = tester.getRect(find.byType(BrandGlyph));
     final wordmark = tester.getRect(find.byType(BrandWordmark));
@@ -76,7 +77,7 @@ void main() {
 
   testWidgets('Arabic shows the Arabic slogan', (tester) async {
     await pumpReveal(tester, locale: const Locale('ar'));
-    await tester.pump(const Duration(milliseconds: 1300));
+    await tester.pump(const Duration(milliseconds: 1900));
 
     expect(find.byKey(const ValueKey('slogan-ar')), findsOneWidget);
     expect(find.byKey(const ValueKey('slogan-en')), findsNothing);

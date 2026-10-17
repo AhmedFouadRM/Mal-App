@@ -47,7 +47,7 @@ class _FirstLaunchScreenState extends State<FirstLaunchScreen> {
               children: [
                 const _Brand(),
                 const SizedBox(height: AppSpacing.md),
-                Text(StringManager.firstLaunchTitle, style: text.headlineMedium),
+                Text(StringManager.firstLaunchTitle, style: text.headlineSmall),
                 const SizedBox(height: AppSpacing.sm),
                 Text(StringManager.firstLaunchHint, style: text.bodyMedium!.copyWith(color: colors.textSecondary)),
                 const SizedBox(height: AppSpacing.lg),

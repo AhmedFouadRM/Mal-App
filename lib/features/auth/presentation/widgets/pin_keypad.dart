@@ -20,19 +20,18 @@ class PinDots extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        for (var i = 0; i < length; i++)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm + 2),
-            child: Container(
-              width: 14,
-              height: 14,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: i < filled ? fill : Colors.transparent,
-                border: Border.all(color: i < filled ? fill : colors.border, width: 1.5),
-              ),
+        for (var i = 0; i < length; i++) ...[
+          if (i > 0) const SizedBox(width: AppSpacing.lg),
+          Container(
+            width: 14,
+            height: 14,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: i < filled ? fill : Colors.transparent,
+              border: Border.all(color: i < filled ? fill : colors.border, width: 1.5),
             ),
           ),
+        ],
       ],
     );
   }
@@ -77,8 +76,10 @@ class PinKeypad extends StatelessWidget {
                 ['1', '2', '3'],
                 ['4', '5', '6'],
                 ['7', '8', '9'],
-              ])
+              ]) ...[
                 _Row([for (final digit in row) _DigitKey(digit: digit, onTap: () => onDigit(digit))]),
+                const SizedBox(height: AppSpacing.lg),
+              ],
               _Row([
                 if (onBiometric == null)
                   const SizedBox.square(dimension: _keySize)
@@ -111,17 +112,14 @@ class _Row extends StatelessWidget {
   final List<Widget> keys;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(bottom: AppSpacing.lg),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        for (final (i, key) in keys.indexed) ...[
-          if (i > 0) const SizedBox(width: AppSpacing.xl),
-          key,
-        ],
+  Widget build(BuildContext context) => Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      for (final (i, key) in keys.indexed) ...[
+        if (i > 0) const SizedBox(width: AppSpacing.xl),
+        key,
       ],
-    ),
+    ],
   );
 }
 
@@ -149,7 +147,7 @@ class _DigitKey extends StatelessWidget {
           onTap: onTap,
           child: SizedBox.square(
             dimension: PinKeypad._keySize,
-            child: Center(child: Text(glyph, style: Theme.of(context).textTheme.headlineMedium)),
+            child: Center(child: Text(glyph, style: Theme.of(context).textTheme.headlineSmall)),
           ),
         ),
       ),
@@ -175,7 +173,7 @@ class _IconKey extends StatelessWidget {
       radius: PinKeypad._keySize / 2,
       child: SizedBox.square(
         dimension: PinKeypad._keySize,
-        child: Icon(icon, color: color, size: 26),
+        child: Icon(icon, color: color, size: 24),
       ),
     ),
   );

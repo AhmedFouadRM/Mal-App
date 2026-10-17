@@ -23,6 +23,7 @@ class PinCheckView extends StatefulWidget {
     this.onCorrect,
     this.icon,
     this.graphic,
+    this.top = 24,
     this.onBiometric,
     super.key,
   }) : assert((icon == null) != (graphic == null), 'Pass an icon or a graphic');
@@ -31,6 +32,9 @@ class PinCheckView extends StatefulWidget {
   /// screen's brand glyph). The lockout countdown always shows its hourglass.
   final IconData? icon;
   final Widget? graphic;
+
+  /// Space above the icon; see [PinScreenLayout.top].
+  final double top;
   final String title;
   final String message;
 
@@ -154,6 +158,7 @@ class _PinCheckViewState extends State<PinCheckView> {
         return PinScreenLayout(
           icon: lockedOut ? Symbols.hourglass_top_rounded : widget.icon,
           graphic: lockedOut ? null : widget.graphic,
+          top: widget.top,
           title: title,
           message: message,
           messageColor: color,

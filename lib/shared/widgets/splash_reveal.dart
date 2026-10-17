@@ -19,7 +19,8 @@ class SplashReveal extends StatefulWidget {
 
   final Widget child;
 
-  static const Duration duration = Duration(milliseconds: 1600);
+  /// The PRD's 1.6 s timeline played 1.5× slower: at 1.6 s it read as too fast.
+  static const Duration duration = Duration(milliseconds: 2400);
   static const Duration reducedDuration = Duration(milliseconds: 200);
 
   /// The overlay, for tests.
@@ -107,8 +108,8 @@ class _SplashScope extends InheritedWidget {
   bool updateShouldNotify(_SplashScope oldWidget) => done != oldWidget.done;
 }
 
-/// The phases of the 1.6 s reveal, as parts of the controller's 0–1
-/// (from the Figma keyframes).
+/// The phases of the reveal, as parts of the controller's 0–1: the Figma
+/// keyframes' seconds over their 1.6 s timeline (played at [SplashReveal.duration]).
 abstract final class _Timeline {
   /// cubic-bezier(0.2, 0, 0, 1).
   static const Curve easeOut = Cubic(0.2, 0, 0, 1);
@@ -120,7 +121,7 @@ abstract final class _Timeline {
   static const Interval wordmark = Interval(0.50 / 1.6, 0.85 / 1.6, curve: easeOut);
   static const Interval slogan = Interval(0.75 / 1.6, 1.05 / 1.6, curve: easeOut);
 
-  /// Hold to 1.4 s, then fade into the first screen.
+  /// Hold to 1.4 s (of 1.6), then fade into the first screen.
   static const Interval fadeOut = Interval(1.4 / 1.6, 1, curve: Curves.easeIn);
 }
 
