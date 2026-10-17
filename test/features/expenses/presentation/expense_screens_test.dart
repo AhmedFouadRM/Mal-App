@@ -19,6 +19,7 @@ import 'package:masroofy/features/expenses/presentation/screens/expense_list_scr
 import 'package:masroofy/features/wallets/domain/entities/transfer.dart';
 import 'package:masroofy/features/wallets/domain/entities/wallet.dart';
 import 'package:masroofy/features/wallets/domain/entities/wallet_summary.dart';
+import 'package:masroofy/shared/categories/category_chip.dart';
 import 'package:masroofy/shared/widgets/segmented_pills.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:mocktail/mocktail.dart';
@@ -136,6 +137,7 @@ void main() {
         _today.addDays(-1): const PeriodTotals(income: Money.zero, spent: Money(8550)),
       },
       categories: {1: _food, 2: _salary},
+      usedCategoryIds: {1, 2},
     );
 
     // All: the balance card, with a salary row.
@@ -335,6 +337,13 @@ void main() {
       await tester.pumpAndSettle();
       verify(() => cubit.undoDelete(2)).called(1);
       verifyNever(() => cubit.commitDelete(any()));
+    });
+
+    testWidgets('a category without transactions gets no chip', (tester) async {
+      await pump(tester, all.copyWith(loaded: [], usedCategoryIds: {2}));
+
+      expect(find.widgetWithText(CategoryChip, 'Salary'), findsOneWidget);
+      expect(find.widgetWithText(CategoryChip, 'Food'), findsNothing);
     });
 
     testWidgets('picking a category chip filters', (tester) async {

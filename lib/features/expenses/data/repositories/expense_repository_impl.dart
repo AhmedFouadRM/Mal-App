@@ -34,6 +34,10 @@ class ExpenseRepositoryImpl implements IExpenseRepository {
       _datasource.watchDailyTotals(filter).map((totals) => totals.map((d, t) => MapEntry(d, _toTotals(t)))).guarded();
 
   @override
+  Stream<Either<Failure, Set<int>>> watchCategoryIds(ExpenseFilter filter) =>
+      _datasource.watchCategoryIds(filter).guarded();
+
+  @override
   Future<Either<Failure, ListEntry>> getEntry(int id) async => (await guardDb(() => _datasource.getById(id))).flatMap(
     (row) => row == null ? const Left(Failure.notFound()) : Right(_toEntry(row)),
   );

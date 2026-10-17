@@ -154,6 +154,10 @@ class ExpenseListCubit extends Cubit<ExpenseListState> {
       _expenses
           .watchDailyTotals(filter)
           .listen((r) => r.match(_onLoadFailure, (d) => emit(state.copyWith(dailyTotals: d)))),
+      // The chips: every category used in this wallet, kind and period.
+      _expenses
+          .watchCategoryIds(filter.copyWith(categoryId: null, search: null))
+          .listen((r) => r.match(_onLoadFailure, (ids) => emit(state.copyWith(usedCategoryIds: ids)))),
     ]);
     _subscribePage();
   }

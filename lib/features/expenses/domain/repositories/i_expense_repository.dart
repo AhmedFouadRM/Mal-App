@@ -21,6 +21,10 @@ abstract interface class IExpenseRepository {
   /// are absent). Used for day headers, so they are right across pages.
   Stream<Either<Failure, Map<LocalDate, PeriodTotals>>> watchDailyTotals(ExpenseFilter filter);
 
+  /// The ids of the categories that rows matching [filter] use, for the
+  /// category filter chips.
+  Stream<Either<Failure, Set<int>>> watchCategoryIds(ExpenseFilter filter);
+
   /// The entry listed by `expenses` row [id]: a transaction, or a transfer
   /// when the row is one of its legs.
   Future<Either<Failure, ListEntry>> getEntry(int id);

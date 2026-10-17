@@ -120,6 +120,21 @@ void main() {
     expect(await ids(october.copyWith(search: '%')), isEmpty, reason: 'no LIKE wildcards');
   });
 
+  test('category ids are those used in the range, wallet and kind, transfers aside', () async {
+    await add(100, today);
+    await add(200, today, category: transport, wallet: son);
+    await addIncome(300, today);
+    await add(400, LocalDate(2026, 9, 30), category: transport); // outside
+    await addTransferRows(db, from: me, to: son, amountMinor: 500, date: today);
+
+    Future<Set<int>> ids(ExpenseFilter filter) async => right(await repository.watchCategoryIds(filter).first);
+
+    expect(await ids(october), {food, transport, salary});
+    expect(await ids(october.copyWith(walletId: me)), {food, salary});
+    expect(await ids(october.copyWith(kind: TransactionKind.expense)), {food, transport});
+    expect(await ids(october.copyWith(kind: TransactionKind.income, walletId: son)), isEmpty);
+  });
+
   test('totals and daily totals follow the filter, with exact sums', () async {
     for (var i = 0; i < 100; i++) {
       await add(10, today); // 100 × 0.10

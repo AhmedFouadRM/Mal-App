@@ -130,6 +130,15 @@ class ExpenseLocalDatasource extends DatabaseAccessor<AppDatabase> with _$Expens
     );
   }
 
+  /// The ids of the categories used by rows matching [filter] (transfer legs
+  /// have none).
+  Stream<Set<int>> watchCategoryIds(ExpenseFilter filter) {
+    final query = selectOnly(expensesTable, distinct: true).join([_joinCategory])
+      ..addColumns([expensesTable.categoryId])
+      ..where(_matches(filter) & expensesTable.categoryId.isNotNull());
+    return query.watch().map((rows) => {for (final row in rows) row.read(expensesTable.categoryId)!});
+  }
+
   Future<ExpenseRow?> getById(int id) async {
     final row = await (select(
       expensesTable,

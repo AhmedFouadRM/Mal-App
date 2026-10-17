@@ -43,6 +43,10 @@ abstract class ExpenseListState with _$ExpenseListState {
     /// All categories by id (incl. hidden, which old expenses may use).
     @Default(<int, Category>{}) Map<int, Category> categories,
 
+    /// Categories with transactions in the wallet, kind and period viewed
+    /// (whatever the category or search), so empty ones get no chip.
+    @Default(<int>{}) Set<int> usedCategoryIds,
+
     /// Every wallet with its balance this month, for the title, the switcher
     /// and the wallet names on rows.
     @Default(<WalletSummary>[]) List<WalletSummary> wallets,
@@ -102,10 +106,11 @@ abstract class ExpenseListState with _$ExpenseListState {
   );
 
   /// Categories offered as filter chips: those of the selected [kind] (all
-  /// of them on All); hidden ones are left out.
+  /// of them on All) that have transactions in the wallet and period viewed.
+  /// The selected one stays, so its filter can always be cleared.
   List<Category> get filterCategories => [
     for (final c in categories.values)
-      if (!c.isHidden && (kind == null || c.kind == kind)) c,
+      if ((usedCategoryIds.contains(c.id) || c.id == categoryId) && (kind == null || c.kind == kind)) c,
   ];
 
   bool get isFiltered => categoryId != null || search.trim().isNotEmpty;

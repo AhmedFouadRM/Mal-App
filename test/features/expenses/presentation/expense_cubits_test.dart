@@ -159,6 +159,7 @@ void main() {
           ),
         );
       });
+      when(() => expenses.watchCategoryIds(any())).thenAnswer((_) => Stream.value(const Right({1, 2})));
       when(() => expenses.watchDailyTotals(any())).thenAnswer(
         (_) => Stream.value(
           Right({
@@ -236,6 +237,38 @@ void main() {
         ),
       ).called(1);
       cubit.selectKind(null);
+      expect(cubit.state.filterCategories, [_food, _salary]);
+      await cubit.close();
+    });
+
+    test('only categories with transactions get a chip, whatever the category or search', () async {
+      stubData();
+      when(() => expenses.watchCategoryIds(any())).thenAnswer((_) => Stream.value(const Right({2})));
+      final cubit = build(walletId: 1)..load();
+      await pumpEventQueue();
+
+      expect(cubit.state.filterCategories, [_salary]);
+      cubit
+        ..selectCategory(2)
+        ..searchChanged('pay');
+      await Future<void>.delayed(ExpenseListCubit.searchDebounce * 2);
+      // The chips ignore the selected category and the search, so the others stay.
+      verify(
+        () => expenses.watchCategoryIds(
+          ExpenseFilter(range: DateRange(LocalDate(2026, 10, 1), _today), walletId: 1),
+        ),
+      ).called(greaterThan(1));
+      await cubit.close();
+    });
+
+    test('a selected category keeps its chip after its last transaction is gone', () async {
+      stubData();
+      when(() => expenses.watchCategoryIds(any())).thenAnswer((_) => Stream.value(const Right({2})));
+      final cubit = build()..load();
+      await pumpEventQueue();
+      cubit.selectCategory(1);
+      await pumpEventQueue();
+
       expect(cubit.state.filterCategories, [_food, _salary]);
       await cubit.close();
     });
