@@ -51,6 +51,10 @@ class AppShell extends StatelessWidget {
   }
 
   static const _barHeight = 64.0;
+
+  /// Width of the floating tab bar (Figma "Navigation Bar"), shared by its
+  /// three tabs; their labels must fit a third of it.
+  static const tabBarWidth = 268.0;
 }
 
 /// Figma "Navigation Bar" as an iOS 26 liquid glass tab bar: the selected
@@ -72,10 +76,10 @@ class _TabBar extends StatelessWidget {
       semanticLabel: text,
     );
     return SizedBox(
-      width: 268,
+      width: AppShell.tabBarWidth,
       child: GlassTabBar.bottom(
         tabs: [
-          tab(Symbols.receipt_long_rounded, StringManager.expensesTitle),
+          tab(Symbols.receipt_long_rounded, StringManager.expensesTab),
           tab(Symbols.bar_chart_rounded, StringManager.analyticsTitle),
           tab(Symbols.settings_rounded, StringManager.settingsTitle),
         ],
