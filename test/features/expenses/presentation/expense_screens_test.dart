@@ -376,10 +376,10 @@ void main() {
         final handle = tester.ensureSemantics();
         await pump(tester, inMe);
 
-        expect(find.text('Me'), findsOneWidget);
+        expect(find.text('My wallet'), findsOneWidget);
         expect(find.byIcon(Symbols.expand_more_rounded), findsOneWidget);
         expect(find.text('Transactions'), findsNothing);
-        expect(find.bySemanticsLabel('Wallet: Me, double tap to change'), findsOneWidget);
+        expect(find.bySemanticsLabel('Wallet: My wallet, double tap to change'), findsOneWidget);
         handle.dispose();
       });
 
@@ -392,7 +392,7 @@ void main() {
       testWidgets('the switcher sheet lists All wallets, then each wallet with its balance this month', (tester) async {
         await pump(tester, inMe);
 
-        await tester.tap(find.text('Me'));
+        await tester.tap(find.text('My wallet'));
         await tester.pumpAndSettle();
 
         expect(find.text('Wallets'), findsOneWidget, reason: 'the sheet title');
@@ -427,7 +427,7 @@ void main() {
       testWidgets('picking a wallet remembers it and switches the list', (tester) async {
         await pump(tester, inMe);
 
-        await tester.tap(find.text('Me'));
+        await tester.tap(find.text('My wallet'));
         await tester.pumpAndSettle();
         await tester.tap(find.text('Son'));
         await tester.pumpAndSettle();
@@ -440,7 +440,7 @@ void main() {
       testWidgets('picking All wallets', (tester) async {
         await pump(tester, inMe);
 
-        await tester.tap(find.text('Me'));
+        await tester.tap(find.text('My wallet'));
         await tester.pumpAndSettle();
         await tester.tap(find.text('All wallets'));
         await tester.pumpAndSettle();
@@ -451,7 +451,7 @@ void main() {
       testWidgets('closing the sheet changes nothing', (tester) async {
         await pump(tester, inMe);
 
-        await tester.tap(find.text('Me'));
+        await tester.tap(find.text('My wallet'));
         await tester.pumpAndSettle();
         await tester.tap(find.byIcon(Symbols.close_rounded));
         await tester.pumpAndSettle();
@@ -463,8 +463,8 @@ void main() {
       testWidgets('Arabic: the switcher and its sheet', (tester) async {
         await pump(tester, inMe, locale: const Locale('ar'));
 
-        expect(find.text('أنا'), findsOneWidget);
-        await tester.tap(find.text('أنا'));
+        expect(find.text('محفظتي'), findsOneWidget);
+        await tester.tap(find.text('محفظتي'));
         await tester.pumpAndSettle();
 
         expect(find.text('المحافظ'), findsOneWidget);
@@ -493,7 +493,7 @@ void main() {
       testWidgets('an empty wallet says so, with the way to fill it', (tester) async {
         await pump(tester, inMe.copyWith(kind: null, loaded: [], totals: PeriodTotals.zero));
 
-        expect(find.text('Nothing in Me yet'), findsOneWidget);
+        expect(find.text('Nothing in My wallet yet'), findsOneWidget);
         expect(find.text('Add an expense, income or transfer.'), findsOneWidget);
       });
 
@@ -504,7 +504,7 @@ void main() {
           locale: const Locale('ar'),
         );
 
-        expect(find.text('لا شيء في أنا بعد'), findsOneWidget);
+        expect(find.text('لا شيء في محفظتي بعد'), findsOneWidget);
         expect(find.text('أضف مصروفًا أو دخلًا أو تحويلًا.'), findsOneWidget);
       });
 
@@ -534,13 +534,13 @@ void main() {
           final amount = tester.widget<Text>(find.text('${minus}EGP 500'));
           expect(amount.style!.color, MasroofyColors.light.textSecondary);
           expect(find.byIcon(Symbols.sync_alt_rounded), findsOneWidget);
-          expect(find.textContaining('Me \u2192'), findsNothing);
+          expect(find.textContaining('My wallet \u2192'), findsNothing);
         });
 
-        testWidgets('the incoming leg reads "From Me" with a plus sign', (tester) async {
+        testWidgets('the incoming leg reads "From My wallet" with a plus sign', (tester) async {
           await pump(tester, inSon.copyWith(loaded: [_transfer(13, 50000, wallet: 2)], totals: PeriodTotals.zero));
 
-          expect(find.text('From Me'), findsOneWidget);
+          expect(find.text('From My wallet'), findsOneWidget);
           final amount = tester.widget<Text>(find.text('+EGP 500'));
           expect(amount.style!.color, MasroofyColors.light.textSecondary);
           expect(find.byIcon(Symbols.sync_alt_rounded), findsOneWidget);
@@ -555,7 +555,7 @@ void main() {
           final arrow = tester.widget<Icon>(find.byIcon(Symbols.arrow_forward_rounded));
           expect(arrow.icon!.matchTextDirection, isTrue, reason: 'a mirroring icon, not a text arrow');
           // Me, then Son, left to right.
-          expect(tester.getCenter(find.text('Me').last).dx, lessThan(tester.getCenter(find.text('Son')).dx));
+          expect(tester.getCenter(find.text('My wallet').last).dx, lessThan(tester.getCenter(find.text('Son')).dx));
           expect(find.textContaining('\u2192'), findsNothing);
         });
 
@@ -572,7 +572,7 @@ void main() {
             locale: const Locale('ar'),
           );
 
-          final me = tester.getCenter(find.text('أنا').last);
+          final me = tester.getCenter(find.text('محفظتي').last);
           final son = tester.getCenter(find.text('ابني'));
           expect(me.dx, greaterThan(son.dx), reason: 'the source is at the start, on the right');
           expect(tester.widget<Icon>(find.byIcon(Symbols.arrow_forward_rounded)).icon!.matchTextDirection, isTrue);
@@ -607,7 +607,7 @@ void main() {
           final handle = tester.ensureSemantics();
           await pump(tester, inSon.copyWith(loaded: [_transfer(13, 50000, wallet: 2)]));
 
-          expect(find.bySemanticsLabel('Transfer from Me, plus EGP 500'), findsOneWidget);
+          expect(find.bySemanticsLabel('Transfer from My wallet, plus EGP 500'), findsOneWidget);
           handle.dispose();
         });
 
@@ -615,7 +615,7 @@ void main() {
           final handle = tester.ensureSemantics();
           await pump(tester, inAll.copyWith(loaded: [_transfer(12, 50000, wallet: 1)]));
 
-          expect(find.bySemanticsLabel('Transfer from Me to Son, EGP 500'), findsOneWidget);
+          expect(find.bySemanticsLabel('Transfer from My wallet to Son, EGP 500'), findsOneWidget);
           handle.dispose();
         });
 
@@ -632,7 +632,7 @@ void main() {
 
           expect(find.text('Food \u00b7 Son'), findsOneWidget, reason: 'a titled row: category and wallet');
           // An untitled row already shows the category as its title; the wallet is the label under it.
-          expect(find.text('Me'), findsWidgets);
+          expect(find.text('My wallet'), findsWidgets);
         });
 
         testWidgets('in a single wallet the wallet is no news', (tester) async {
@@ -783,7 +783,7 @@ void main() {
         await pump(tester, withWallets.copyWith(categoryId: 1));
 
         expect(find.text('Wallet'), findsOneWidget);
-        expect(find.text('Me'), findsOneWidget);
+        expect(find.text('My wallet'), findsOneWidget);
         final category = tester.getTopLeft(find.text('Category')).dy;
         final wallet = tester.getTopLeft(find.text('Wallet')).dy;
         final title = tester.getTopLeft(find.text('Title')).dy;
@@ -801,7 +801,7 @@ void main() {
       testWidgets('the Wallet field opens the wallet sheet, and a pick records it elsewhere', (tester) async {
         await pump(tester, withWallets);
 
-        await tester.tap(find.text('Me'));
+        await tester.tap(find.text('My wallet'));
         await tester.pumpAndSettle();
         expect(find.text('Choose wallet'), findsOneWidget);
         expect(find.text('Default'), findsOneWidget);
@@ -827,7 +827,7 @@ void main() {
         expect(find.text('Add transfer'), findsOneWidget);
         expect(find.text('From'), findsOneWidget);
         expect(find.text('To'), findsOneWidget);
-        expect(find.text('Me'), findsOneWidget);
+        expect(find.text('My wallet'), findsOneWidget);
         expect(find.text('Son'), findsOneWidget);
         expect(find.text('Amount'), findsOneWidget);
         expect(find.text('Date'), findsOneWidget);
@@ -856,11 +856,11 @@ void main() {
         await tester.tap(find.text('Son'));
         await tester.pumpAndSettle();
         expect(find.text('Choose wallet'), findsOneWidget);
-        await tester.tap(find.text('Me').last);
+        await tester.tap(find.text('My wallet').last);
         await tester.pumpAndSettle();
         verify(() => cubit.toWalletSelected(1)).called(1);
 
-        await tester.tap(find.text('Me'));
+        await tester.tap(find.text('My wallet'));
         await tester.pumpAndSettle();
         await tester.tap(find.text('Son').last);
         await tester.pumpAndSettle();
@@ -892,7 +892,7 @@ void main() {
         expect(find.text('إضافة تحويل'), findsOneWidget);
         expect(find.text('من'), findsOneWidget);
         expect(find.text('إلى'), findsOneWidget);
-        expect(find.text('أنا'), findsOneWidget);
+        expect(find.text('محفظتي'), findsOneWidget);
         expect(find.text('حفظ التحويل'), findsOneWidget);
         expect(find.text('تحويل'), findsOneWidget, reason: 'the type control');
         expect(Directionality.of(tester.element(find.text('من'))), TextDirection.rtl);
@@ -902,7 +902,7 @@ void main() {
         await pump(tester, withWallets, locale: const Locale('ar'));
 
         expect(find.text('محفظة'), findsOneWidget);
-        expect(find.text('أنا'), findsOneWidget);
+        expect(find.text('محفظتي'), findsOneWidget);
       });
 
       testWidgets('editing a transfer has no type control', (tester) async {

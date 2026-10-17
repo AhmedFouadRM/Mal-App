@@ -405,9 +405,9 @@ void main() {
       final label = captured[1] as String Function({String? seedKey, String? name});
       expect(label(seedKey: 'food'), 'Food');
       expect(label(name: 'Gym'), 'Gym');
-      // Wallets are named like categories: Me from the translations, the others as typed.
+      // Wallets are named like categories: My wallet from the translations, the others as typed.
       final walletLabel = captured[2] as String Function({String? seedKey, String? name});
-      expect(walletLabel(seedKey: 'me'), 'Me');
+      expect(walletLabel(seedKey: 'me'), 'My wallet');
       expect(walletLabel(name: 'Son'), 'Son');
     });
 

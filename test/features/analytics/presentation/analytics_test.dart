@@ -636,9 +636,9 @@ void main() {
         await pump(tester, withWallets);
 
         expect(find.text('By wallet'), findsOneWidget);
-        expect(find.text('Me'), findsOneWidget);
+        expect(find.text('My wallet'), findsOneWidget);
         expect(find.text('Son'), findsOneWidget);
-        final card = find.ancestor(of: find.text('Me'), matching: find.byType(Card));
+        final card = find.ancestor(of: find.text('My wallet'), matching: find.byType(Card));
         expect(find.descendant(of: card, matching: find.text('EGP 750')), findsOneWidget);
         expect(find.descendant(of: card, matching: find.text('EGP 250')), findsOneWidget);
         expect(find.text('In +EGP 5,000'), findsOneWidget);
@@ -712,7 +712,7 @@ void main() {
                   .first,
             )
             .height;
-        expect(rowHeight('Me'), 88);
+        expect(rowHeight('My wallet'), 88);
         expect(rowHeight('Wife'), 70);
       });
 
@@ -790,9 +790,9 @@ void main() {
         );
 
         expect(find.text('حسب المحفظة'), findsOneWidget);
-        expect(find.text('أنا'), findsOneWidget);
+        expect(find.text('محفظتي'), findsOneWidget);
         expect(find.text('ابني'), findsOneWidget);
-        final card = find.ancestor(of: find.text('أنا'), matching: find.byType(Card));
+        final card = find.ancestor(of: find.text('محفظتي'), matching: find.byType(Card));
         expect(find.descendant(of: card, matching: find.text('٧٥٠ ج.م.')), findsOneWidget);
       });
     });

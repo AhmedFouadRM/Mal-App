@@ -106,7 +106,7 @@ void main() {
 
       expect(find.text('Wallets'), findsNWidgets(2), reason: 'the app bar and the section');
       expect(find.text('2'), findsOneWidget, reason: 'how many');
-      expect(find.text('Me'), findsOneWidget);
+      expect(find.text('My wallet'), findsOneWidget);
       expect(find.text('Son'), findsOneWidget);
       expect(find.text('EGP 4,500 this month'), findsOneWidget);
       expect(find.text('EGP 500 this month'), findsOneWidget);
@@ -114,7 +114,7 @@ void main() {
       expect(find.text('Default'), findsOneWidget);
       // The badge is beside Me, not Son.
       expect(
-        (tester.getCenter(find.byType(DefaultBadge)).dy - tester.getCenter(find.text('Me')).dy).abs(),
+        (tester.getCenter(find.byType(DefaultBadge)).dy - tester.getCenter(find.text('My wallet')).dy).abs(),
         lessThan(20),
       );
     });
@@ -173,11 +173,11 @@ void main() {
       await pump(tester, loaded, locale: const Locale('ar'));
 
       expect(find.text('المحافظ'), findsNWidgets(2));
-      expect(find.text('أنا'), findsOneWidget);
+      expect(find.text('محفظتي'), findsOneWidget);
       expect(find.text('افتراضية'), findsOneWidget);
       expect(find.text('٤٬٥٠٠ ج.م. هذا الشهر'), findsOneWidget);
       expect(find.text('٢'), findsOneWidget);
-      expect(Directionality.of(tester.element(find.text('أنا'))), TextDirection.rtl);
+      expect(Directionality.of(tester.element(find.text('محفظتي'))), TextDirection.rtl);
     });
 
     testWidgets('typed names take the direction of their own text', (tester) async {
@@ -327,12 +327,12 @@ void main() {
       expect(find.text('New default wallet'), findsNothing);
     });
 
-    testWidgets('editing Me shows its translated name', (tester) async {
+    testWidgets('editing My wallet shows its translated name', (tester) async {
       await pump(tester, ready.copyWith(status: WalletFormStatus.loading, id: 1), states: Stream.value(editingMe));
-      expect(tester.widget<TextField>(find.byType(TextField)).controller!.text, 'Me');
+      expect(tester.widget<TextField>(find.byType(TextField)).controller!.text, 'My wallet');
     });
 
-    testWidgets('editing Me in Arabic shows أنا', (tester) async {
+    testWidgets('editing My wallet in Arabic shows محفظتي', (tester) async {
       await pump(
         tester,
         ready.copyWith(status: WalletFormStatus.loading, id: 1),
@@ -340,7 +340,7 @@ void main() {
         locale: const Locale('ar'),
       );
 
-      expect(tester.widget<TextField>(find.byType(TextField)).controller!.text, 'أنا');
+      expect(tester.widget<TextField>(find.byType(TextField)).controller!.text, 'محفظتي');
       expect(find.text('تعيين كمحفظة افتراضية'), findsOneWidget);
       expect(find.text('حذف المحفظة'), findsOneWidget);
     });
@@ -446,7 +446,7 @@ void main() {
       );
       expect(find.text('Move transactions to'), findsOneWidget);
       // The default wallet that stays is the first choice.
-      expect(find.descendant(of: find.byType(AlertDialog), matching: find.text('Me')), findsOneWidget);
+      expect(find.descendant(of: find.byType(AlertDialog), matching: find.text('My wallet')), findsOneWidget);
 
       await tester.tap(find.widgetWithText(FilledButton, 'Delete'));
       await tester.pumpAndSettle();

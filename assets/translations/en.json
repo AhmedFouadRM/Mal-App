@@ -75,7 +75,7 @@
     "all": "All wallets",
     "default": "Default",
     "choose": "Choose wallet",
-    "me": "Me",
+    "me": "My wallet",
     "balance_month": "{} this month",
     "switcher_semantics": "Wallet: {}, double tap to change",
     "empty_title": "Nothing in {} yet",

@@ -253,13 +253,13 @@ void main() {
       await pump(tester, ready.copyWith(wallets: [_me, _son], walletId: 1, categoryId: 1));
 
       expect(find.text('Wallet'), findsOneWidget);
-      expect(find.text('Me'), findsOneWidget);
+      expect(find.text('My wallet'), findsOneWidget);
       expect(
         tester.getTopLeft(find.text('Category')).dy,
         lessThan(tester.getTopLeft(find.text('Wallet')).dy),
       );
 
-      await tester.tap(find.text('Me'));
+      await tester.tap(find.text('My wallet'));
       await tester.pumpAndSettle();
       expect(find.text('Choose wallet'), findsOneWidget);
       await tester.tap(find.text('Son'));
