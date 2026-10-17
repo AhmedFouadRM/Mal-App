@@ -3,21 +3,26 @@ import 'package:masroofy/core/theme/app_dimensions.dart';
 import 'package:masroofy/core/theme/masroofy_colors.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-/// The shared body of the PIN screens (Figma "Auth"): a tinted icon, a title,
+/// The shared body of the PIN screens (Figma "Auth"): a tinted icon (or a
+/// 72 px [graphic] in its place), a title,
 /// one line of message, the dots, an optional note, and the keypad at the bottom.
 class PinScreenLayout extends StatelessWidget {
   const PinScreenLayout({
-    required this.icon,
     required this.title,
     required this.message,
     required this.dots,
     required this.keypad,
+    this.icon,
+    this.graphic,
     this.messageColor,
     this.note,
     super.key,
-  });
+  }) : assert(icon != null || graphic != null, 'Pass an icon or a graphic');
 
-  final IconData icon;
+  final IconData? icon;
+
+  /// Replaces the icon chip; used when set.
+  final Widget? graphic;
   final String title;
   final String message;
 
@@ -42,11 +47,14 @@ class PinScreenLayout extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: AppSpacing.lg),
-                Container(
-                  width: 72,
-                  height: 72,
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: colors.primarySubtle),
-                  child: Icon(icon, color: colors.primary, size: 32),
+                SizedBox.square(
+                  dimension: 72,
+                  child: graphic != null
+                      ? Center(child: graphic)
+                      : DecoratedBox(
+                          decoration: BoxDecoration(shape: BoxShape.circle, color: colors.primarySubtle),
+                          child: Icon(icon, color: colors.primary, size: 32),
+                        ),
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 Text(title, style: text.headlineSmall, textAlign: TextAlign.center),

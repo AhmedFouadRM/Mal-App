@@ -9,6 +9,7 @@ import 'package:masroofy/core/utils/currency_utils.dart';
 import 'package:masroofy/features/settings/presentation/widgets/currency_list.dart';
 import 'package:masroofy/shared/settings/settings_cubit.dart';
 import 'package:masroofy/shared/widgets/aura_background.dart';
+import 'package:masroofy/shared/widgets/brand.dart';
 import 'package:masroofy/shared/widgets/glass_bottom_bar.dart';
 
 /// First launch: the one onboarding step (Settings PRD → First Launch). Shows
@@ -44,6 +45,8 @@ class _FirstLaunchScreenState extends State<FirstLaunchScreen> {
                 MediaQuery.paddingOf(context).bottom + AppSpacing.lg,
               ),
               children: [
+                const _Brand(),
+                const SizedBox(height: AppSpacing.md),
                 Text(StringManager.firstLaunchTitle, style: text.headlineMedium),
                 const SizedBox(height: AppSpacing.sm),
                 Text(StringManager.firstLaunchHint, style: text.bodyMedium!.copyWith(color: colors.textSecondary)),
@@ -59,6 +62,26 @@ class _FirstLaunchScreenState extends State<FirstLaunchScreen> {
             child: Text(StringManager.continueLabel),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// The glyph and wordmark above the title (Figma 41:1007): the first screen
+/// after the splash introduces the app.
+class _Brand extends StatelessWidget {
+  const _Brand();
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      height: 50,
+      child: Row(
+        children: [
+          BrandGlyph(width: 40),
+          SizedBox(width: 10),
+          BrandWordmark(height: 30),
+        ],
       ),
     );
   }

@@ -17,6 +17,7 @@ import 'package:masroofy/features/budgets/presentation/widgets/budget_alert_list
 import 'package:masroofy/features/recurring_expenses/presentation/widgets/recurring_auto_generator.dart';
 import 'package:masroofy/shared/auth/auth_cubit.dart';
 import 'package:masroofy/shared/settings/settings_cubit.dart';
+import 'package:masroofy/shared/widgets/brand.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +29,8 @@ Future<void> main() async {
   // The persisted lockout and biometric support, so the lock screen is right at the first frame.
   await getIt<AuthCubit>().load();
   await ThmanyahFontLoader.load();
+  // The brand artwork, so the splash reveal's first frame matches the system splash.
+  await BrandAssets.precache();
   // Loads the liquid glass shaders off the UI thread before the first frame.
   await LiquidGlassWidgets.initialize(enablePerformanceMonitor: false);
   LicenseRegistry.addLicense(() async* {

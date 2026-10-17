@@ -54,6 +54,8 @@ dependencies:
   gap: ^3.0.1
   material_symbols_icons: ^4.2960.0
   flutter_animate: ^4.5.2
+  # The Mal brand artwork (glyph, wordmark, slogans) as vector outlines
+  flutter_svg: ^2.3.0
 
   # Export
   share_plus: ^13.3.0
@@ -90,6 +92,7 @@ flutter:
 
   assets:
     - assets/translations/
+    - assets/brand/
     - assets/fonts/sora/OFL.txt
     # Thmanyah Sans is loaded at runtime when present (see ThmanyahFontLoader);
     # it is gitignored, and the app falls back to the system Arabic font.

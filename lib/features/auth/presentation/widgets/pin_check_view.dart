@@ -17,16 +17,20 @@ import 'package:material_symbols_icons/symbols.dart';
 /// [AuthCubit] above it.
 class PinCheckView extends StatefulWidget {
   const PinCheckView({
-    required this.icon,
     required this.title,
     required this.message,
     required this.submit,
     this.onCorrect,
+    this.icon,
+    this.graphic,
     this.onBiometric,
     super.key,
-  });
+  }) : assert((icon == null) != (graphic == null), 'Pass an icon or a graphic');
 
-  final IconData icon;
+  /// The tinted icon chip at the top, or a [graphic] in its place (the lock
+  /// screen's brand glyph). The lockout countdown always shows its hourglass.
+  final IconData? icon;
+  final Widget? graphic;
   final String title;
   final String message;
 
@@ -149,6 +153,7 @@ class _PinCheckViewState extends State<PinCheckView> {
         };
         return PinScreenLayout(
           icon: lockedOut ? Symbols.hourglass_top_rounded : widget.icon,
+          graphic: lockedOut ? null : widget.graphic,
           title: title,
           message: message,
           messageColor: color,

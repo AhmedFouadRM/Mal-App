@@ -23,6 +23,7 @@ import 'package:masroofy/shared/formatting/display_format.dart';
 import 'package:masroofy/shared/settings/settings_cubit.dart';
 import 'package:masroofy/shared/widgets/app_shell.dart';
 import 'package:masroofy/shared/widgets/aura_background.dart';
+import 'package:masroofy/shared/widgets/brand.dart';
 import 'package:masroofy/shared/widgets/glass_app_bar.dart';
 import 'package:masroofy/shared/widgets/grouped_list.dart';
 import 'package:masroofy/shared/widgets/icon_dialog.dart';
@@ -361,7 +362,11 @@ class SettingsScreen extends StatelessWidget {
               SectionHeader(title: StringManager.sectionAbout),
               GroupedCard(
                 children: [
-                  SettingsTile(icon: Symbols.info_rounded, title: StringManager.appVersion, subtitle: appInfo.label),
+                  SettingsTile(
+                    graphic: const BrandAppIcon(size: 24),
+                    title: StringManager.appVersion,
+                    subtitle: appInfo.label,
+                  ),
                   SettingsTile(
                     icon: Symbols.description_rounded,
                     title: StringManager.licenses,

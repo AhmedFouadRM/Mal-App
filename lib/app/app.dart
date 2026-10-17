@@ -6,6 +6,7 @@ import 'package:masroofy/core/strings/string_manager.dart';
 import 'package:masroofy/core/theme/app_theme.dart';
 import 'package:masroofy/features/auth/presentation/widgets/auth_lifecycle_gate.dart';
 import 'package:masroofy/shared/settings/settings_cubit.dart';
+import 'package:masroofy/shared/widgets/splash_reveal.dart';
 
 class MasroofyApp extends StatelessWidget {
   const MasroofyApp({super.key});
@@ -25,8 +26,9 @@ class MasroofyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       routerConfig: appRouter,
-      // Inside the theme; relocks after the grace period and hides the app switcher snapshot.
-      builder: (context, child) => AuthLifecycleGate(child: child!),
+      // Inside the theme; relocks after the grace period and hides the app
+      // switcher snapshot. The brand reveal plays over the first screen.
+      builder: (context, child) => AuthLifecycleGate(child: SplashReveal(child: child!)),
     );
   }
 }

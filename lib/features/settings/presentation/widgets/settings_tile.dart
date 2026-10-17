@@ -2,22 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:masroofy/core/theme/masroofy_colors.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-/// A row of a Settings card (Figma "Settings Row"): a tinted icon, a title
+/// A row of a Settings card (Figma "Settings Row"): a tinted icon (or a
+/// [graphic] in the chip, such as the app icon on the Version row), a title
 /// with an optional subtitle, and at the end either a [value] with a chevron,
 /// or a custom [trailing] such as a switch. [destructive] paints it red.
 class SettingsTile extends StatelessWidget {
   const SettingsTile({
-    required this.icon,
     required this.title,
+    this.icon,
+    this.graphic,
     this.subtitle,
     this.value,
     this.trailing,
     this.onTap,
     this.destructive = false,
     super.key,
-  });
+  }) : assert((icon == null) != (graphic == null), 'Pass an icon or a graphic');
 
-  final IconData icon;
+  final IconData? icon;
+
+  /// Shown in the chip instead of [icon].
+  final Widget? graphic;
   final String title;
   final String? subtitle;
 
@@ -42,7 +47,8 @@ class SettingsTile extends StatelessWidget {
           shape: BoxShape.circle,
           color: destructive ? colors.negativeSubtle : colors.surfaceVariant,
         ),
-        child: Icon(icon, color: destructive ? colors.negative : colors.textPrimary, size: 22),
+        alignment: Alignment.center,
+        child: graphic ?? Icon(icon, color: destructive ? colors.negative : colors.textPrimary, size: 22),
       ),
       title: Text(title, style: text.bodyLarge!.copyWith(color: destructive ? colors.textNegative : null)),
       subtitle: subtitle == null ? null : Text(subtitle!),

@@ -13,6 +13,8 @@ import 'package:masroofy/features/auth/presentation/screens/pin_setup_screen.dar
 import 'package:masroofy/features/auth/presentation/screens/pin_verify_screen.dart';
 import 'package:masroofy/shared/auth/auth_cubit.dart';
 import 'package:masroofy/shared/auth/pin_flow.dart';
+import 'package:masroofy/shared/widgets/brand.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../helpers/pump_app.dart';
@@ -77,6 +79,25 @@ void main() {
         expect(find.byKey(ValueKey('pin-key-$digit')), findsOneWidget);
       }
       expect(find.byTooltip('Use fingerprint'), findsNothing);
+    });
+
+    testWidgets('the brand glyph (72 px, tile-less) replaces the lock chip', (tester) async {
+      await pumpLock(tester);
+
+      expect(find.byIcon(Symbols.lock_rounded), findsNothing);
+      expect(find.byType(BrandGlyph), findsOneWidget);
+      expect(tester.getSize(find.byType(BrandGlyph)).width, 72);
+      expect(tester.getTopLeft(find.byType(BrandGlyph)).dy, lessThan(tester.getTopLeft(find.text('Enter PIN')).dy));
+    });
+
+    testWidgets('a lockout shows the hourglass in place of the glyph', (tester) async {
+      await pumpLock(tester);
+      for (var i = 0; i < 5; i++) {
+        await typePin(tester, '0000');
+      }
+
+      expect(find.byIcon(Symbols.hourglass_top_rounded), findsOneWidget);
+      expect(find.byType(BrandGlyph), findsNothing);
     });
 
     testWidgets('the right PIN unlocks', (tester) async {

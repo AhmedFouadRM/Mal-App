@@ -7,6 +7,7 @@ import 'package:masroofy/features/settings/presentation/screens/currency_picker_
 import 'package:masroofy/features/settings/presentation/screens/first_launch_screen.dart';
 import 'package:masroofy/features/settings/presentation/widgets/radio_mark.dart';
 import 'package:masroofy/shared/settings/settings_cubit.dart';
+import 'package:masroofy/shared/widgets/brand.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../helpers/pump_app.dart';
@@ -56,6 +57,25 @@ void main() {
       expect(isSelected(tester, 'Saudi Riyal'), isFalse);
       expect(find.byType(ListTile), findsNWidgets(CurrencyUtils.supported.length));
     });
+
+    for (final locale in const [Locale('en'), Locale('ar')]) {
+      testWidgets('${locale.languageCode}: the glyph and wordmark sit above the title', (tester) async {
+        await pumpFirstLaunch(tester, locale: locale);
+
+        final glyph = find.byType(BrandGlyph);
+        final wordmark = find.byType(BrandWordmark);
+        expect(glyph, findsOneWidget);
+        expect(wordmark, findsOneWidget);
+        expect(tester.getSize(glyph).width, 40);
+        expect(tester.getSize(wordmark).height, 30);
+        // One row, the glyph first in reading order.
+        expect(tester.getCenter(glyph).dy, closeTo(tester.getCenter(wordmark).dy, 1));
+        final ltr = locale.languageCode == 'en';
+        expect(tester.getCenter(glyph).dx < tester.getCenter(wordmark).dx, ltr);
+        final title = find.text(ltr ? 'Choose your currency' : 'اختر عملتك');
+        expect(tester.getBottomLeft(glyph).dy, lessThan(tester.getTopLeft(title).dy));
+      });
+    }
 
     testWidgets('3-decimal currencies say so', (tester) async {
       await pumpFirstLaunch(tester);
