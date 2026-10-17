@@ -458,7 +458,14 @@
   },
   "auth": {
     "enter_pin": "Enter PIN",
-    "wrong_pin": "Incorrect PIN. Try again.",
+    "wrong_pin": {
+      "zero": "Incorrect PIN.",
+      "one": "Incorrect PIN. {} try left before a wait.",
+      "two": "Incorrect PIN. {} tries left before a wait.",
+      "few": "Incorrect PIN. {} tries left before a wait.",
+      "many": "Incorrect PIN. {} tries left before a wait.",
+      "other": "Incorrect PIN. {} tries left before a wait."
+    },
     "biometric_prompt": "Authenticate to unlock",
     "use_biometric": "Use fingerprint",
     "create_pin": "Create a PIN",

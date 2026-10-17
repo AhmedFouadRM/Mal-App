@@ -135,6 +135,15 @@ class _PinCheckViewState extends State<PinCheckView> {
     return context.digits(text);
   }
 
+  /// "Incorrect PIN. 2 tries left before a wait."
+  String _wrongPin(BuildContext context, AuthState state) {
+    final triesLeft = (AppConstants.pinAttemptsBeforeDelay - state.failedAttempts).clamp(
+      0,
+      AppConstants.pinAttemptsBeforeDelay,
+    );
+    return StringManager.wrongPin(triesLeft, context.count(triesLeft));
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = MasroofyColors.of(context);
@@ -151,7 +160,7 @@ class _PinCheckViewState extends State<PinCheckView> {
             StringManager.lockedOutBody(_countdown(context, remaining)),
             colors.textWarning,
           ),
-          PinResult.wrong => (widget.title, StringManager.wrongPin, colors.textNegative),
+          PinResult.wrong => (widget.title, _wrongPin(context, state), colors.textNegative),
           PinResult.error => (widget.title, StringManager.failureSecureStorage, colors.textNegative),
           _ => (widget.title, widget.message, null),
         };

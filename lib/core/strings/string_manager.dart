@@ -445,7 +445,9 @@ class StringManager {
 
   // ── Auth ──
   static String get enterPin => 'auth.enter_pin'.tr();
-  static String get wrongPin => 'auth.wrong_pin'.tr();
+  /// [triesLeft] wrong PINs remain before the lockout delay; [number] is it
+  /// shaped for the locale.
+  static String wrongPin(int triesLeft, String number) => 'auth.wrong_pin'.plural(triesLeft, args: [number]);
   static String get biometricPrompt => 'auth.biometric_prompt'.tr();
   static String get useBiometric => 'auth.use_biometric'.tr();
   static String get createPin => 'auth.create_pin'.tr();

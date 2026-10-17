@@ -154,12 +154,37 @@ void main() {
       final auth = await pumpLock(tester);
 
       await typePin(tester, '0000');
-      expect(find.text('Incorrect PIN. Try again.'), findsOneWidget);
+      expect(find.text('Incorrect PIN. 4 tries left before a wait.'), findsOneWidget);
       expect(auth.state.isLocked, isTrue);
 
       await typePin(tester, '1');
-      expect(find.text('Incorrect PIN. Try again.'), findsNothing);
+      expect(find.textContaining('Incorrect PIN.'), findsNothing);
       expect(find.text('Enter your PIN to open Mal.'), findsOneWidget);
+    });
+
+    testWidgets('each wrong PIN counts down the tries left before the delay', (tester) async {
+      await pumpLock(tester);
+
+      for (final message in [
+        'Incorrect PIN. 4 tries left before a wait.',
+        'Incorrect PIN. 3 tries left before a wait.',
+        'Incorrect PIN. 2 tries left before a wait.',
+        'Incorrect PIN. 1 try left before a wait.',
+      ]) {
+        await typePin(tester, '0000');
+        expect(find.text(message), findsOneWidget);
+      }
+
+      await typePin(tester, '0000');
+      expect(find.text('Too many tries'), findsOneWidget);
+    });
+
+    testWidgets('the tries left survive a restart', (tester) async {
+      when(() => repository.loadLockout()).thenAnswer((_) async => const Right(LockoutRecord(failedAttempts: 2)));
+      await pumpLock(tester);
+
+      await typePin(tester, '0000');
+      expect(find.text('Incorrect PIN. 2 tries left before a wait.'), findsOneWidget);
     });
 
     testWidgets('after 5 wrong PINs: a countdown, a dimmed pad, then back to normal', (tester) async {
@@ -251,7 +276,18 @@ void main() {
       expect(find.text('5'), findsNothing);
 
       await typePin(tester, '0000');
-      expect(find.text('رمز خاطئ. حاول مرة أخرى.'), findsOneWidget);
+      expect(find.text('رمز PIN غير صحيح. ٤ محاولات قبل الانتظار.'), findsOneWidget);
+    });
+
+    testWidgets('Arabic tries left use the dual and singular forms (Figma 41:855)', (tester) async {
+      when(() => repository.loadLockout()).thenAnswer((_) async => const Right(LockoutRecord(failedAttempts: 2)));
+      await pumpLock(tester, locale: const Locale('ar'));
+
+      await typePin(tester, '0000');
+      expect(find.text('رمز PIN غير صحيح. محاولتان قبل الانتظار.'), findsOneWidget);
+
+      await typePin(tester, '0000');
+      expect(find.text('رمز PIN غير صحيح. محاولة واحدة قبل الانتظار.'), findsOneWidget);
     });
 
     testWidgets('Arabic countdown uses Eastern digits', (tester) async {
@@ -320,7 +356,7 @@ void main() {
 
       await typePin(tester, '9999');
 
-      expect(find.text('Incorrect PIN. Try again.'), findsOneWidget);
+      expect(find.text('Incorrect PIN. 4 tries left before a wait.'), findsOneWidget);
       expect(results, isEmpty);
     });
 
