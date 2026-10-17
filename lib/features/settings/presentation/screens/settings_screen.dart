@@ -363,7 +363,7 @@ class SettingsScreen extends StatelessWidget {
               GroupedCard(
                 children: [
                   SettingsTile(
-                    graphic: const BrandAppIcon(size: 24),
+                    graphic: const BrandAppIcon(size: 40),
                     title: StringManager.appVersion,
                     subtitle: appInfo.label,
                   ),

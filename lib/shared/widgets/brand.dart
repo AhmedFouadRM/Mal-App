@@ -15,6 +15,10 @@ abstract final class BrandAssets {
   static const String glyphNoteFront = '$_dir/glyph_note_front.svg';
   static const String glyphWallet = '$_dir/glyph_wallet.svg';
 
+  /// The single-colour glyph (Round 10 V2): a flat wallet silhouette with
+  /// cut-outs, for small uses and tinted surfaces.
+  static const String glyphMono = '$_dir/glyph_mono.svg';
+
   /// Wordmark A0, "Mal مال".
   static const String wordmark = '$_dir/wordmark.svg';
   static const String sloganEn = '$_dir/slogan_en.svg';
@@ -28,6 +32,7 @@ abstract final class BrandAssets {
     glyphNoteBack,
     glyphNoteFront,
     glyphWallet,
+    glyphMono,
     wordmark,
     sloganEn,
     sloganAr,
@@ -95,6 +100,7 @@ class _PicturePainter extends CustomPainter {
 /// Width over height of the glyph, the wordmark and the slogans.
 abstract final class BrandAspect {
   static const double glyph = 172 / 165;
+  static const double glyphMono = 172 / 166;
   static const double wordmark = 341 / 150;
   static const double sloganEn = 344 / 36;
   static const double sloganAr = 249 / 48;
@@ -153,6 +159,24 @@ class BrandGlyph extends StatelessWidget {
   }
 }
 
+/// The single-colour glyph in the wordmark green (#047857, #34D399 in dark),
+/// for small uses such as the first-launch row, where the full-colour glyph
+/// would blend into the mint aura.
+class BrandGlyphMono extends StatelessWidget {
+  const BrandGlyphMono({required this.height, super.key});
+
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      width: height * BrandAspect.glyphMono,
+      child: _BrandArt(BrandAssets.glyphMono, color: MasroofyColors.of(context).primary),
+    );
+  }
+}
+
 /// Wordmark A0 in the brand green (#047857, #34D399 in dark).
 class BrandWordmark extends StatelessWidget {
   const BrandWordmark({required this.height, super.key});
@@ -201,7 +225,8 @@ class BrandSlogan extends StatelessWidget {
   }
 }
 
-/// The app icon, a rounded emerald tile with the glyph (Settings → About).
+/// The app icon in a circle mask (Figma "Brand / App icon · circle"), where
+/// it stands for the app among circular row icons (Settings → About).
 class BrandAppIcon extends StatelessWidget {
   const BrandAppIcon({required this.size, super.key});
 
@@ -209,8 +234,7 @@ class BrandAppIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(size / 4),
+    return ClipOval(
       child: SizedBox.square(dimension: size, child: const _BrandArt(BrandAssets.appIcon)),
     );
   }

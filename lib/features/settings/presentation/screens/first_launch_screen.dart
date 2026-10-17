@@ -67,22 +67,19 @@ class _FirstLaunchScreenState extends State<FirstLaunchScreen> {
   }
 }
 
-/// The glyph and wordmark above the title (Figma 41:1007): the first screen
-/// after the splash introduces the app.
+/// The single-colour glyph and the wordmark above the title (Figma 41:1007):
+/// the first screen after the splash introduces the app.
 class _Brand extends StatelessWidget {
   const _Brand();
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      height: 50,
-      child: Row(
-        children: [
-          BrandGlyph(width: 40),
-          SizedBox(width: 10),
-          BrandWordmark(height: 30),
-        ],
-      ),
+    return const Row(
+      children: [
+        BrandGlyphMono(height: 30),
+        SizedBox(width: 8),
+        BrandWordmark(height: 30),
+      ],
     );
   }
 }

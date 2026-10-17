@@ -59,21 +59,27 @@ void main() {
     });
 
     for (final locale in const [Locale('en'), Locale('ar')]) {
-      testWidgets('${locale.languageCode}: the glyph and wordmark sit above the title', (tester) async {
+      testWidgets('${locale.languageCode}: the single-colour glyph and wordmark sit above the title', (tester) async {
         await pumpFirstLaunch(tester, locale: locale);
 
-        final glyph = find.byType(BrandGlyph);
+        final glyph = find.byType(BrandGlyphMono);
         final wordmark = find.byType(BrandWordmark);
         expect(glyph, findsOneWidget);
         expect(wordmark, findsOneWidget);
-        expect(tester.getSize(glyph).width, 40);
+        // Not the full-colour glyph: it blends into the mint aura.
+        expect(find.byType(BrandGlyph), findsNothing);
+        expect(tester.getSize(glyph).height, 30);
         expect(tester.getSize(wordmark).height, 30);
+        final gap = locale.languageCode == 'en'
+            ? tester.getTopLeft(wordmark).dx - tester.getTopRight(glyph).dx
+            : tester.getTopLeft(glyph).dx - tester.getTopRight(wordmark).dx;
+        expect(gap, 8);
         // One row, the glyph first in reading order.
         expect(tester.getCenter(glyph).dy, closeTo(tester.getCenter(wordmark).dy, 1));
         final ltr = locale.languageCode == 'en';
         expect(tester.getCenter(glyph).dx < tester.getCenter(wordmark).dx, ltr);
         final title = find.text(ltr ? 'Choose your currency' : 'اختر عملتك');
-        expect(tester.getBottomLeft(glyph).dy, lessThan(tester.getTopLeft(title).dy));
+        expect(tester.getTopLeft(title).dy - tester.getBottomLeft(glyph).dy, 12);
       });
     }
 

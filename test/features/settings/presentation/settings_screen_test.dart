@@ -18,6 +18,8 @@ import 'package:masroofy/features/settings/presentation/widgets/hold_to_delete_b
 import 'package:masroofy/shared/auth/auth_cubit.dart';
 import 'package:masroofy/shared/auth/pin_flow.dart';
 import 'package:masroofy/shared/settings/settings_cubit.dart';
+import 'package:masroofy/shared/widgets/brand.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../helpers/pump_app.dart';
@@ -165,6 +167,17 @@ void main() {
       expect(find.text('Use Western digits (123)'), findsNothing);
       expect(find.text('Change PIN'), findsNothing);
       expect(find.text('Unlock with fingerprint'), findsNothing);
+    });
+
+    testWidgets('the Version row leads with the app icon in a 40 px circle, no info chip', (tester) async {
+      await pump(tester);
+      await tester.scrollUntilVisible(find.text('Version'), 200);
+
+      expect(find.byIcon(Symbols.info_rounded), findsNothing);
+      final icon = find.descendant(of: find.widgetWithText(ListTile, 'Version'), matching: find.byType(BrandAppIcon));
+      expect(icon, findsOneWidget);
+      expect(tester.getSize(icon), const Size.square(40));
+      expect(find.descendant(of: icon, matching: find.byType(ClipOval)), findsOneWidget);
     });
 
     testWidgets('with App Lock on: the subtitle, Change PIN and the fingerprint switch', (tester) async {

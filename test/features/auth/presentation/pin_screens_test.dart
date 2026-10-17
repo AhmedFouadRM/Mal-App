@@ -87,6 +87,24 @@ void main() {
       expect(find.byIcon(Symbols.lock_rounded), findsNothing);
       expect(find.byType(BrandGlyph), findsOneWidget);
       expect(tester.getSize(find.byType(BrandGlyph)).width, 72);
+      // Not clipped and not on a chip: the whole wallet and notes show.
+      final glyph = find.byType(BrandGlyph);
+      for (final type in [ClipOval, ClipRRect, ClipPath]) {
+        expect(
+          find.ancestor(of: glyph, matching: find.byType(type)),
+          findsNothing,
+          reason: '$type',
+        );
+      }
+      expect(
+        find.ancestor(
+          of: glyph,
+          matching: find.byWidgetPredicate(
+            (widget) => widget is DecoratedBox && (widget.decoration as BoxDecoration?)?.shape == BoxShape.circle,
+          ),
+        ),
+        findsNothing,
+      );
       expect(tester.getTopLeft(find.byType(BrandGlyph)).dy, lessThan(tester.getTopLeft(find.text('Enter PIN')).dy));
     });
 

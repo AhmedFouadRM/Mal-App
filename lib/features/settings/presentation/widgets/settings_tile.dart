@@ -3,7 +3,7 @@ import 'package:masroofy/core/theme/masroofy_colors.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 /// A row of a Settings card (Figma "Settings Row"): a tinted icon (or a
-/// [graphic] in the chip, such as the app icon on the Version row), a title
+/// 40 px [graphic] in its place, such as the app icon on the Version row), a title
 /// with an optional subtitle, and at the end either a [value] with a chevron,
 /// or a custom [trailing] such as a switch. [destructive] paints it red.
 class SettingsTile extends StatelessWidget {
@@ -21,7 +21,7 @@ class SettingsTile extends StatelessWidget {
 
   final IconData? icon;
 
-  /// Shown in the chip instead of [icon].
+  /// Fills the 40 px leading slot instead of the tinted [icon] chip.
   final Widget? graphic;
   final String title;
   final String? subtitle;
@@ -40,15 +40,17 @@ class SettingsTile extends StatelessWidget {
     final text = Theme.of(context).textTheme;
     final tint = destructive ? colors.negative : colors.textSecondary;
     return ListTile(
-      leading: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: destructive ? colors.negativeSubtle : colors.surfaceVariant,
-        ),
-        alignment: Alignment.center,
-        child: graphic ?? Icon(icon, color: destructive ? colors.negative : colors.textPrimary, size: 22),
+      leading: SizedBox.square(
+        dimension: 40,
+        child:
+            graphic ??
+            DecoratedBox(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: destructive ? colors.negativeSubtle : colors.surfaceVariant,
+              ),
+              child: Icon(icon, color: destructive ? colors.negative : colors.textPrimary, size: 22),
+            ),
       ),
       title: Text(title, style: text.bodyLarge!.copyWith(color: destructive ? colors.textNegative : null)),
       subtitle: subtitle == null ? null : Text(subtitle!),
