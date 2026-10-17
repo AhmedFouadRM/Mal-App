@@ -82,6 +82,7 @@
     "empty_body": "Add an expense, income or transfer.",
     "add": "Add wallet",
     "new": "New wallet",
+    "create": "Create new wallet",
     "edit": "Edit wallet",
     "name": "Name",
     "name_helper": "Up to {} characters",

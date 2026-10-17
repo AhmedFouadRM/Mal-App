@@ -18,7 +18,9 @@ typedef WalletChoice = ({int? walletId});
 /// The glass sheet listing wallets, each with its balance this month, the
 /// Default badge and a check mark on the current one. With [includeAll] it
 /// starts with **All wallets** (the switcher); without, it is the picker of
-/// the forms. Resolves to the choice, or null when dismissed.
+/// the forms. With [onCreate] it ends with **Create new wallet**, which
+/// closes the sheet (resolving to null) and calls it. Resolves to the
+/// choice, or null when dismissed.
 Future<WalletChoice?> showWalletSheet(
   BuildContext context, {
   required String title,
@@ -26,6 +28,7 @@ Future<WalletChoice?> showWalletSheet(
   required int? selectedId,
   required int? defaultId,
   bool includeAll = false,
+  VoidCallback? onCreate,
 }) => showGlassSheet<WalletChoice>(
   context,
   title: title,
@@ -35,7 +38,7 @@ Future<WalletChoice?> showWalletSheet(
     children: [
       if (includeAll)
         _SheetRow(
-          leading: const _AllAvatar(),
+          leading: const _RoundIcon(Symbols.account_balance_wallet_rounded),
           name: StringManager.allWallets,
           balance: Money.sum([for (final w in wallets) w.balance]),
           selected: selectedId == null,
@@ -51,12 +54,25 @@ Future<WalletChoice?> showWalletSheet(
           selected: summary.wallet.id == selectedId,
           onTap: () => Navigator.pop(context, (walletId: summary.wallet.id)),
         ),
+      if (onCreate != null)
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          leading: const _RoundIcon(Symbols.add_rounded),
+          title: Text(StringManager.createWallet),
+          onTap: () {
+            Navigator.pop(context);
+            onCreate();
+          },
+        ),
     ],
   ),
 );
 
-class _AllAvatar extends StatelessWidget {
-  const _AllAvatar();
+/// A 40 circle with a glyph: All wallets, and Create new wallet.
+class _RoundIcon extends StatelessWidget {
+  const _RoundIcon(this.icon);
+
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +81,7 @@ class _AllAvatar extends StatelessWidget {
       width: 40,
       height: 40,
       decoration: BoxDecoration(shape: BoxShape.circle, color: colors.surfaceVariant),
-      child: Icon(Symbols.account_balance_wallet_rounded, color: colors.textPrimary, size: 22),
+      child: Icon(icon, color: colors.textPrimary, size: 22),
     );
   }
 }

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:masroofy/app/routes.dart';
 import 'package:masroofy/core/strings/string_manager.dart';
 import 'package:masroofy/core/theme/app_dimensions.dart';
 import 'package:masroofy/core/theme/masroofy_colors.dart';
@@ -16,6 +18,10 @@ import 'package:material_symbols_icons/symbols.dart';
 /// caret and opens the wallet sheet. The choice is stored in [SettingsCubit],
 /// so every tab that shows wallet data follows it. Falls back to
 /// [fallbackTitle] until the wallets load.
+///
+/// With a single wallet there is nothing to add up, so All wallets is not
+/// offered and the title names that wallet. The sheet ends with Create new
+/// wallet, which opens the wallet form.
 class WalletSwitcher extends StatelessWidget {
   const WalletSwitcher({required this.wallets, required this.fallbackTitle, super.key});
 
@@ -31,7 +37,8 @@ class WalletSwitcher extends StatelessWidget {
       wallets: wallets,
       selectedId: viewedId,
       defaultId: settings.state.defaultWalletId,
-      includeAll: true,
+      includeAll: wallets.length > 1,
+      onCreate: () => unawaited(context.push(RoutePaths.newWallet)),
     );
     if (choice == null) return;
     unawaited(settings.setViewedWallet(choice.walletId));
@@ -42,14 +49,16 @@ class WalletSwitcher extends StatelessWidget {
     final viewedId = context.select<SettingsCubit, int?>((cubit) => cubit.state.viewedWalletId);
     if (wallets.isEmpty) return Text(fallbackTitle);
     final colors = MasroofyColors.of(context);
-    final wallet = wallets.where((summary) => summary.wallet.id == viewedId).firstOrNull?.wallet;
+    final wallet = wallets.length == 1
+        ? wallets.single.wallet
+        : wallets.where((summary) => summary.wallet.id == viewedId).firstOrNull?.wallet;
     final name = wallet?.displayName ?? StringManager.allWallets;
     return Semantics(
       button: true,
       label: StringManager.walletSwitcherSemantics(name),
       excludeSemantics: true,
       child: InkWell(
-        onTap: () => _switch(context, viewedId),
+        onTap: () => _switch(context, wallet?.id),
         borderRadius: BorderRadius.circular(AppRadius.full),
         // Figma: a 24 avatar (16 glyph), 8 to the name, the caret right after.
         child: Padding(

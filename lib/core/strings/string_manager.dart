@@ -108,6 +108,7 @@ class StringManager {
   static String get walletEmptyBody => 'wallets.empty_body'.tr();
   static String get addWallet => 'wallets.add'.tr();
   static String get newWallet => 'wallets.new'.tr();
+  static String get createWallet => 'wallets.create'.tr();
   static String get editWallet => 'wallets.edit'.tr();
   static String get walletNameLabel => 'wallets.name'.tr();
   static String walletNameHelper(String max) => 'wallets.name_helper'.tr(args: [max]);
