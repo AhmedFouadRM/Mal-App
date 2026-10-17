@@ -28,6 +28,9 @@ class StringManager {
 
   // ── Expenses ──
   static String get expensesTitle => 'expenses.title'.tr();
+
+  /// The tab bar's name for the Transactions screen, short enough for its tab.
+  static String get expensesTab => 'expenses.tab'.tr();
   static String get addExpense => 'expenses.add'.tr();
   static String get editExpense => 'expenses.edit'.tr();
   static String expenseDeleted(String title) => 'expenses.deleted'.tr(args: [title]);
