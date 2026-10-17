@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="splash_background">#F4F7F5</color>
+    <!-- Emerald circle behind the splash icon (Android 12+), the launcher icon green. -->
+    <color name="splash_icon_background">#059669</color>
 </resources>
